@@ -1,4 +1,5 @@
-import {useMemo,useState} from "react";
+
+import { useMemo, useState } from "react";
 import {
   Utensils,
   MapPin,
@@ -16,28 +17,384 @@ import {
   X,
   Smartphone
 } from "lucide-react";
-const foodImg={biryani:"https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=500&q=85",pizza:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=85",burger:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=85",dosa:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=85",cake:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=85",rolls:"https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=500&q=85",chinese:"https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=85",thali:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=500&q=85"};
-const categories=[["Biryani",foodImg.biryani],["Pizza",foodImg.pizza],["Burger",foodImg.burger],["South Indian",foodImg.dosa],["Cakes",foodImg.cake],["Rolls",foodImg.rolls],["Chinese",foodImg.chinese],["North Indian",foodImg.thali]];
-const restaurants=[
-["Preeti Dining Hall","Maharashtrian • Thalis • Indian","4.3","25–35 mins","₹200 for two","LOCAL FAVOURITE",foodImg.thali,true],
-["Satvik Pure Veg Restaurant","South Indian • North Indian","4.6","20–30 mins","₹250 for two","PURE VEG",foodImg.dosa,true],
-["Hotel Celebrations","Indian • Chinese • Tandoor","4.3","30–40 mins","₹400 for two","POPULAR","https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=85",false],
-["Sigdi Restaurant","Mughlai • North Indian • Kebabs","4.6","30–40 mins","₹350 for two","MUST TRY","https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=85",false],
-["24K Kraft Brewzz","Multi-cuisine • Indian • Asian","4.6","35–45 mins","₹600 for two","TRENDING","https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=85",false],
-["Hotel Supraja Savji","Savji • Maharashtrian • Non-veg","4.7","30–40 mins","₹350 for two","SOLAPURI TASTE","https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=85",false],
-["Aroma","Pizza • Chinese • Indian • Desserts","4.3","25–35 mins","₹350 for two","FAMILY PICK","https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=85",false],
-["Hotel Samrudhhi Garden","Punjabi • Chinese • Indian","4.7","30–40 mins","₹300 for two","GREAT VALUE",foodImg.thali,true],
-["Hotel Siddheshwar Purnabramha","South Indian • Breakfast • Veg","4.2","20–30 mins","₹200 for two","QUICK BITES",foodImg.dosa,true],
-["Türkish Zaika","Mandi • Turkish • North Indian","4.7","35–45 mins","₹500 for two","FEAST MODE","https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=85",false]
+
+const foodImg = {
+  biryani: "https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=500&q=85",
+  pizza: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=85",
+  burger: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=85",
+  dosa: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=85",
+  cake: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=85",
+  rolls: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=500&q=85",
+  chinese: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=85",
+  thali: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=500&q=85"
+};
+
+const categories = [
+  ["Biryani", foodImg.biryani],
+  ["Pizza", foodImg.pizza],
+  ["Burger", foodImg.burger],
+  ["South Indian", foodImg.dosa],
+  ["Cakes", foodImg.cake],
+  ["Rolls", foodImg.rolls],
+  ["Chinese", foodImg.chinese],
+  ["North Indian", foodImg.thali]
 ];
-function App(){const[q,setQ]=useState(""),[search,setSearch]=useState(""),[cat,setCat]=useState(""),[menu,setMenu]=useState(false),[top,setTop]=useState(false);
-const shown=useMemo(()=>{let a=restaurants.filter(r=>(r[0]+" "+r[1]).toLowerCase().includes(search.toLowerCase())&&(!cat||(cat==="North Indian"?r[1].toLowerCase().includes("indian"):r[1].toLowerCase().includes(cat.toLowerCase()))));return top?[...a].sort((x,y)=>+y[2]-+x[2]):a},[search,cat,top]);
-function find(e){e.preventDefault();setSearch(q.trim());document.querySelector("#restaurants")?.scrollIntoView({behavior:"smooth"})}
-return <div><header className="nav"><a href="#home" className="brand"><span className="mark"><Utensils/></span><b>swiggy<span>.</span></b></a><button className="loc" onClick={()=>alert("Delivery location: Solapur, Maharashtra")}><MapPin/><span><b>Solapur</b><small>Maharashtra, India</small></span><ChevronDown/></button><button className="hamb" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button><nav className={menu?"links open":"links"}><a href="#restaurants"><Utensils/>Restaurants</a><a href="#offers"><BadgePercent/>Offers <em>NEW</em></a><a href="#help"><Headset/>Help</a><a href="#signin"><UserRound/>Sign In</a><a href="#cart"><ShoppingCart/>Cart <b className="count">0</b></a></nav></header>
-<main id="home"><section className="hero"><div className="hero-text"><p className="eyebrow">— SOLAPUR, WHAT ARE YOU CRAVING?</p><h1>Good food.<br/><span>Good mood.</span></h1><p className="sub">Your favourite meals, delivered fresh to your door.</p><form className="search" onSubmit={find}><Search/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search biryani, pizza, restaurants..."/><button>Search <ArrowRight size={17}/></button></form><div className="perks"><span>✓ Quick delivery</span><span>✓ Local favourites</span><span>✓ Great offers</span></div></div><div className="hero-art"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=90" alt="Fresh pizza"/><div className="float f1"><Clock3/><span><b>Fast delivery</b><small>Hot & fresh to you</small></span></div><div className="float f2"><Star fill="currentColor"/><span><b>4.8/5</b><small>Foodie approved</small></span></div><div className="sticker">MADE<br/>WITH ♥</div></div></section>
-<section className="section content" id="categories"><div className="heading"><div><p className="kicker">PICK YOUR CRAVING</p><h2>What's on your mind?</h2></div><span className="hint">Tap a category to filter ↓</span></div><div className="cats">{categories.map(([n,img])=><button key={n} className={cat===n?"cat active":"cat"} onClick={()=>{setCat(cat===n?"":n);setSearch("");setQ("")}}><img src={img} alt={n}/><b>{n}</b></button>)}</div></section>
-<section className="offer content" id="offers"><div><span className="pill">TASTY DEALS</span><h2>A little treat<br/>goes a long way.</h2><p>Discover delicious picks and save on your next order.</p><a href="#restaurants">Explore local favourites <ArrowRight size={17}/></a></div><img src={foodImg.pizza} alt="Pizza deal"/><span className="deal">YUM!<br/>DEALS</span></section>
-<section className="section content" id="restaurants"><div className="heading"><div><p className="kicker">GOOD EATS AROUND YOU</p><h2>{search?`Results for “${search}”`:cat?`${cat} in Solapur`:"Popular restaurants in Solapur"}</h2><p className="subdesc">A few local favourites to make your day more delicious.</p></div><button className={top?"filter active":"filter"} onClick={()=>setTop(!top)}><SlidersHorizontal size={16}/> Top rated</button></div>{shown.length?<div className="grid">{shown.map((r,i)=><article className="card" key={r[0]}><div className="photo"><img src={r[6]} alt={`${r[0]} restaurant food`} loading="lazy"/><span className="badge">{r[5]}</span><button className="heart" onClick={e=>e.currentTarget.classList.toggle("liked")} aria-label="Save restaurant">♡</button><div className="gradient"/><b className="discount">{["FLAT ₹100 OFF","20% OFF UP TO ₹125","FREE ITEM","FLAT ₹75 OFF","UP TO 15% OFF"][i%5]}</b></div><div className="cardbody"><div className="title"><h3>{r[0]}</h3><span className="rating"><Star size={14} fill="currentColor"/> {r[2]}</span></div><p className="cuisine">{r[1]}</p><div className="meta"><span><Clock3 size={14}/>{r[3]}</span><b>{r[4]}</b></div><div className="cardbottom"><span className={r[7]?"veg":"nonveg"}>●</span>{r[7]?"Vegetarian options":"Veg & non-veg options"}<button onClick={()=>alert(r[0]+"\\n"+r[1]+"\\n\\nFrontend demo only.")}>View menu ›</button></div></div></article>)}</div>:<div className="empty"><span>🍽️</span><h3>No restaurants found</h3><p>Try another restaurant name or food type.</p><button onClick={()=>{setQ("");setSearch("");setCat("")}}>Clear search</button></div>}<p className="note">Restaurant names are based on public Solapur listings. Offers, delivery times and menu actions are illustrative demo content.</p></section>
-<section className="app-promo"><div className="phone"><div className="screen"><b className="mini">swiggy.</b><img src={foodImg.burger} alt="App food preview"/><h3>Hungry?</h3><p>Good food is just a tap away.</p><button>Order now</button></div></div><div><p className="kicker">GOOD FOOD, ON THE GO</p><h2>Cravings don't<br/>wait. Neither should you.</h2><p>Keep your favourites close and order in a few taps.</p><div className="stores"><a href="#app">▶ <span><small>GET IT ON</small><b>Google Play</b></span></a><a href="#app">◉ <span><small>Download on the</small><b>App Store</b></span></a></div></div></section></main>
-<footer id="help"><div className="footergrid content"><div><a href="#home" className="brand footerbrand"><span className="mark"><Utensils/></span><b>swiggy<span>.</span></b></a><p>Bringing the best of food<br/>to your neighbourhood.</p><small>© 2026 Swiggy-inspired student project</small></div><div><h4>Company</h4><a href="#home">About us</a><a href="#home">Our offerings</a><a href="#home">Careers</a><a href="#home">Blog</a><a href="#home">Contact us</a></div><div><h4>We deliver to</h4><a href="#restaurants">Solapur</a><a href="#restaurants">Pune</a><a href="#restaurants">Mumbai</a><a href="#restaurants">Kolhapur</a><a href="#restaurants">Explore cities</a></div><div><h4>Help & support</h4><a href="#help">Partner with us</a><a href="#help">Ride with us</a><a href="#help">Help centre</a><a href="#help">FAQs</a></div><div><h4>Follow along</h4><div className="social"><a href="#social" aria-label="Instagram">Instagram</a><a href="#social" aria-label="Facebook">Facebook</a><a href="#social" aria-label="Twitter">X</a><a href="#social" aria-label="LinkedIn">LinkedIn</a></div><div className="miniapp"><Smartphone/><span><b>Get the app</b><small>Food in a few taps</small></span></div></div></div><div className="footbottom"><div className="content"><span>Made with ♥ for food lovers in Solapur</span><span><a href="#terms">Terms & Conditions</a><a href="#privacy">Privacy Policy</a><a href="#cookies">Cookie Policy</a></span></div></div></footer></div>}
+
+const restaurants = [
+  ["Preeti Dining Hall", "Maharashtrian • Thalis • Indian", "4.3", "25–35 mins", "₹200 for two", "LOCAL FAVOURITE", foodImg.thali, true],
+  ["Satvik Pure Veg Restaurant", "South Indian • North Indian", "4.6", "20–30 mins", "₹250 for two", "PURE VEG", foodImg.dosa, true],
+  ["Hotel Celebrations", "Indian • Chinese • Tandoor", "4.3", "30–40 mins", "₹400 for two", "POPULAR", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=85", false],
+  ["Sigdi Restaurant", "Mughlai • North Indian • Kebabs", "4.6", "30–40 mins", "₹350 for two", "MUST TRY", "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=85", false],
+  ["24K Kraft Brewzz", "Multi-cuisine • Indian • Asian", "4.6", "35–45 mins", "₹600 for two", "TRENDING", "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=85", false],
+  ["Hotel Supraja Savji", "Savji • Maharashtrian • Non-veg", "4.7", "30–40 mins", "₹350 for two", "SOLAPURI TASTE", "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=85", false],
+  ["Aroma", "Pizza • Chinese • Indian • Desserts", "4.3", "25–35 mins", "₹350 for two", "FAMILY PICK", "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=85", false],
+  ["Hotel Samrudhhi Garden", "Punjabi • Chinese • Indian", "4.7", "30–40 mins", "₹300 for two", "GREAT VALUE", foodImg.thali, true],
+  ["Hotel Siddheshwar Purnabramha", "South Indian • Breakfast • Veg", "4.2", "20–30 mins", "₹200 for two", "QUICK BITES", foodImg.dosa, true],
+  ["Türkish Zaika", "Mandi • Turkish • North Indian", "4.7", "35–45 mins", "₹500 for two", "FEAST MODE", "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=85", false]
+];
+
+function App() {
+  const [q, setQ] = useState("");
+  const [search, setSearch] = useState("");
+  const [cat, setCat] = useState("");
+  const [menu, setMenu] = useState(false);
+  const [top, setTop] = useState(false);
+
+  const shown = useMemo(() => {
+    let a = restaurants.filter(
+      (r) =>
+        (r[0] + " " + r[1]).toLowerCase().includes(search.toLowerCase()) &&
+        (!cat ||
+          (cat === "North Indian"
+            ? r[1].toLowerCase().includes("indian")
+            : r[1].toLowerCase().includes(cat.toLowerCase())))
+    );
+
+    return top ? [...a].sort((x, y) => +y[2] - +x[2]) : a;
+  }, [search, cat, top]);
+
+  function find(e) {
+    e.preventDefault();
+    setSearch(q.trim());
+    document.querySelector("#restaurants")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  return (
+    <div>
+      <header className="nav">
+        <a href="#home" className="brand">
+          <span className="mark"><Utensils /></span>
+          <b>swiggy<span>.</span></b>
+        </a>
+
+        <button
+          className="loc"
+          onClick={() => alert("Delivery location: Solapur, Maharashtra")}
+        >
+          <MapPin />
+          <span>
+            <b>Solapur</b>
+            <small>Maharashtra, India</small>
+          </span>
+          <ChevronDown />
+        </button>
+
+        <button className="hamb" onClick={() => setMenu(!menu)}>
+          {menu ? <X /> : <Menu />}
+        </button>
+
+        <nav className={menu ? "links open" : "links"}>
+          <a href="#restaurants"><Utensils />Restaurants</a>
+          <a href="#offers"><BadgePercent />Offers <em>NEW</em></a>
+          <a href="#help"><Headset />Help</a>
+          <a href="#signin"><UserRound />Sign In</a>
+          <a href="#cart"><ShoppingCart />Cart <b className="count">0</b></a>
+        </nav>
+      </header>
+
+      <main id="home">
+        <section className="hero">
+          <div className="hero-text">
+            <p className="eyebrow">— SOLAPUR, WHAT ARE YOU CRAVING?</p>
+            <h1>Good food.<br /><span>Good mood.</span></h1>
+            <p className="sub">
+              Your favourite meals, delivered fresh to your door.
+            </p>
+
+            <form className="search" onSubmit={find}>
+              <Search />
+              <input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search biryani, pizza, restaurants..."
+              />
+              <button>Search <ArrowRight size={17} /></button>
+            </form>
+
+            <div className="perks">
+              <span>✓ Quick delivery</span>
+              <span>✓ Local favourites</span>
+              <span>✓ Great offers</span>
+            </div>
+          </div>
+
+          <div className="hero-art">
+            <img
+              src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=90"
+              alt="Fresh pizza"
+            />
+            <div className="float f1">
+              <Clock3 />
+              <span><b>Fast delivery</b><small>Hot & fresh to you</small></span>
+            </div>
+            <div className="float f2">
+              <Star fill="currentColor" />
+              <span><b>4.8/5</b><small>Foodie approved</small></span>
+            </div>
+            <div className="sticker">MADE<br />WITH ♥</div>
+          </div>
+        </section>
+
+        <section className="section content" id="categories">
+          <div className="heading">
+            <div>
+              <p className="kicker">PICK YOUR CRAVING</p>
+              <h2>What's on your mind?</h2>
+            </div>
+            <span className="hint">Tap a category to filter ↓</span>
+          </div>
+
+          <div className="cats">
+            {categories.map(([n, img]) => (
+              <button
+                key={n}
+                className={cat === n ? "cat active" : "cat"}
+                onClick={() => {
+                  setCat(cat === n ? "" : n);
+                  setSearch("");
+                  setQ("");
+                }}
+              >
+                <img src={img} alt={n} />
+                <b>{n}</b>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="offer content" id="offers">
+          <div>
+            <span className="pill">TASTY DEALS</span>
+            <h2>A little treat<br />goes a long way.</h2>
+            <p>Discover delicious picks and save on your next order.</p>
+            <a href="#restaurants">
+              Explore local favourites <ArrowRight size={17} />
+            </a>
+          </div>
+          <img src={foodImg.pizza} alt="Pizza deal" />
+          <span className="deal">YUM!<br />DEALS</span>
+        </section>
+
+        <section className="section content" id="restaurants">
+          <div className="heading">
+            <div>
+              <p className="kicker">GOOD EATS AROUND YOU</p>
+              <h2>
+                {search
+                  ? `Results for “${search}”`
+                  : cat
+                    ? `${cat} in Solapur`
+                    : "Popular restaurants in Solapur"}
+              </h2>
+              <p className="subdesc">
+                A few local favourites to make your day more delicious.
+              </p>
+            </div>
+
+            <button
+              className={top ? "filter active" : "filter"}
+              onClick={() => setTop(!top)}
+            >
+              <SlidersHorizontal size={16} /> Top rated
+            </button>
+          </div>
+
+          {shown.length ? (
+            <div className="grid">
+              {shown.map((r, i) => (
+                <article className="card" key={r[0]}>
+                  <div className="photo">
+                    <img
+                      src={r[6]}
+                      alt={`${r[0]} restaurant food`}
+                      loading="lazy"
+                    />
+                    <span className="badge">{r[5]}</span>
+                    <button
+                      className="heart"
+                      onClick={(e) =>
+                        e.currentTarget.classList.toggle("liked")
+                      }
+                      aria-label="Save restaurant"
+                    >
+                      ♡
+                    </button>
+                    <div className="gradient" />
+                    <b className="discount">
+                      {[
+                        "FLAT ₹100 OFF",
+                        "20% OFF UP TO ₹125",
+                        "FREE ITEM",
+                        "FLAT ₹75 OFF",
+                        "UP TO 15% OFF"
+                      ][i % 5]}
+                    </b>
+                  </div>
+
+                  <div className="cardbody">
+                    <div className="title">
+                      <h3>{r[0]}</h3>
+                      <span className="rating">
+                        <Star size={14} fill="currentColor" /> {r[2]}
+                      </span>
+                    </div>
+                    <p className="cuisine">{r[1]}</p>
+                    <div className="meta">
+                      <span><Clock3 size={14} />{r[3]}</span>
+                      <b>{r[4]}</b>
+                    </div>
+                    <div className="cardbottom">
+                      <span className={r[7] ? "veg" : "nonveg"}>●</span>
+                      {r[7] ? "Vegetarian options" : "Veg & non-veg options"}
+                      <button
+                        onClick={() =>
+                          alert(r[0] + "\n" + r[1] + "\n\nFrontend demo only.")
+                        }
+                      >
+                        View menu ›
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="empty">
+              <span>🍽️</span>
+              <h3>No restaurants found</h3>
+              <p>Try another restaurant name or food type.</p>
+              <button
+                onClick={() => {
+                  setQ("");
+                  setSearch("");
+                  setCat("");
+                }}
+              >
+                Clear search
+              </button>
+            </div>
+          )}
+
+          <p className="note">
+            Restaurant names are based on public Solapur listings. Offers,
+            delivery times and menu actions are illustrative demo content.
+          </p>
+        </section>
+
+        <section className="app-promo">
+          <div className="phone">
+            <div className="screen">
+              <b className="mini">swiggy.</b>
+              <img src={foodImg.burger} alt="App food preview" />
+              <h3>Hungry?</h3>
+              <p>Good food is just a tap away.</p>
+              <button>Order now</button>
+            </div>
+          </div>
+
+          <div>
+            <p className="kicker">GOOD FOOD, ON THE GO</p>
+            <h2>Cravings don't<br />wait. Neither should you.</h2>
+            <p>Keep your favourites close and order in a few taps.</p>
+            <div className="stores">
+              <a href="#app">
+                ▶ <span><small>GET IT ON</small><b>Google Play</b></span>
+              </a>
+              <a href="#app">
+                ◉ <span><small>Download on the</small><b>App Store</b></span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer id="help">
+        <div className="footergrid content">
+          <div>
+            <a href="#home" className="brand footerbrand">
+              <span className="mark"><Utensils /></span>
+              <b>swiggy<span>.</span></b>
+            </a>
+            <p>Bringing the best of food<br />to your neighbourhood.</p>
+            <small>© 2026 Swiggy-inspired student project</small>
+          </div>
+
+          <div>
+            <h4>Company</h4>
+            <a href="#home">About us</a>
+            <a href="#home">Our offerings</a>
+            <a href="#home">Careers</a>
+            <a href="#home">Blog</a>
+            <a href="#home">Contact us</a>
+          </div>
+
+          <div>
+            <h4>We deliver to</h4>
+            <a href="#restaurants">Solapur</a>
+            <a href="#restaurants">Pune</a>
+            <a href="#restaurants">Mumbai</a>
+            <a href="#restaurants">Kolhapur</a>
+            <a href="#restaurants">Explore cities</a>
+          </div>
+
+          <div>
+            <h4>Help & support</h4>
+            <a href="#help">Partner with us</a>
+            <a href="#help">Ride with us</a>
+            <a href="#help">Help centre</a>
+            <a href="#help">FAQs</a>
+          </div>
+
+          <div>
+            <h4>Follow along</h4>
+            <div className="social">
+              <a href="#social">Instagram</a>
+              <a href="#social">Facebook</a>
+              <a href="#social">X</a>
+              <a href="#social">LinkedIn</a>
+            </div>
+            <div className="miniapp">
+              <Smartphone />
+              <span><b>Get the app</b><small>Food in a few taps</small></span>
+            </div>
+          </div>
+        </div>
+
+        <div className="footbottom">
+          <div className="content">
+            <span>Made with ♥ for food lovers in Solapur</span>
+            <span>
+              <a href="#terms">Terms & Conditions</a>
+              <a href="#privacy">Privacy Policy</a>
+              <a href="#cookies">Cookie Policy</a>
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 export default App;
