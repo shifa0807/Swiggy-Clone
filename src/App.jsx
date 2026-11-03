@@ -1,5 +1,21 @@
 import {useMemo,useState} from "react";
-import {Utensils,MapPin,ChevronDown,Search,ShoppingCart,UserRound,Headset,BadgePercent,Star,Clock3,SlidersHorizontal,ArrowRight,Instagram,Facebook,Twitter,Linkedin,Menu,X,Smartphone} from "lucide-react";
+import {
+  Utensils,
+  MapPin,
+  ChevronDown,
+  Search,
+  ShoppingCart,
+  UserRound,
+  Headset,
+  BadgePercent,
+  Star,
+  Clock3,
+  SlidersHorizontal,
+  ArrowRight,
+  Menu,
+  X,
+  Smartphone
+} from "lucide-react";
 const foodImg={biryani:"https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=500&q=85",pizza:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=85",burger:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=85",dosa:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=85",cake:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=85",rolls:"https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=500&q=85",chinese:"https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=85",thali:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=500&q=85"};
 const categories=[["Biryani",foodImg.biryani],["Pizza",foodImg.pizza],["Burger",foodImg.burger],["South Indian",foodImg.dosa],["Cakes",foodImg.cake],["Rolls",foodImg.rolls],["Chinese",foodImg.chinese],["North Indian",foodImg.thali]];
 const restaurants=[
